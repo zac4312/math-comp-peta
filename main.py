@@ -1,11 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-labels = ['Q3', 'D7', 'P76'] 
-scores= np.array([24,20,24,27,39,13,19,27,10,22,
-                  14,28,17,18,21,28,18,20,32,22,
-                  34,13,26,23,17,21,12,30,22,14,
-                  38,19,15,40,18,18,22,24,22,19])
+scores= np.array([10, 12, 13, 13, 14, 14, 15, 17, 17, 18,
+                  18, 18, 18, 19, 19, 19, 20, 20, 21, 21,
+                  22, 22, 22, 22, 22, 23, 24, 24, 24, 26,
+                  27, 27, 28, 28, 30, 32, 34, 38, 39, 40.])
 
 #mean, Median, Mode
 median=np.median(scores)
@@ -44,40 +43,28 @@ stdv=np.std(scores)
 print('Standard Diviation = ', round(stdv, 2))
 print('Variance = ', round(vrc, 2))
 print('---------------------------')
-# quartile, percentile, decile
 
-Q3= np.percentile(scores, 30)
-D7= np.percentile(scores, 70)
-P76= np.percentile(scores,76)
+# quartile, percentile, decile
+#numpy percentile function is (percentile/100) x (Number + 1)
+Q3= np.percentile(scores, 75)#100 seperate in to 4's 100/4 = 25 x 3(Q3)=75     
+D7= np.percentile(scores, 70)#100 seperate in to 10's since finding D7, means 70/100
+P76= np.percentile(scores,76)#76 = 76/100print('Quartile 3 = ', Q3)
 
 print('Quartile 3 = ', Q3)
 print('Decile 7 = ', D7)
 print('percentile 76 = ', P76)
 
 ## graphing
-hist, bins = np.histogram(scores, bins=[0, Q3, D7, P76, 40])
+# Calculate the cumulative percentage for each percentile
+percentiles = [D7, Q3, P76]  # Percentiles to compare
+cumulative_percentages = [np.percentile(scores, p) for p in percentiles]
 
-hist = hist[1:]
-labels = labels[:len(hist)]
+# Calculate the percentage of scores below each percentile
+percent_below = [np.sum(scores <= p) / len(scores) * 100 for p in cumulative_percentages]
 
 
-plt.pie(hist, labels=labels, autopct='%1.1f%%', startangle=140)
-plt.axis('equal')
-
-plt.title('Students Scores Pie Chart')
+plt.bar(['Q3', 'D7', 'P76'], percent_below, color=['blue', 'orange', 'green'])
+plt.xlabel('Percentiles')
+plt.ylabel('Percentage of Scores')
+plt.title('Comparison of Percentiles')
 plt.show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
